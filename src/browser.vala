@@ -39,11 +39,21 @@ public class RUI.Browser : Gtk.Window {
 
         this.web_view = new WebKit.WebView();
         add(this.web_view);
-        this.destroy.connect(Gtk.main_quit);
         this.web_view.notify["title"].connect(() => {
             this.title = "%s - %s".printf(this.web_view.title, TITLE);
         });
         this.web_view.load_changed.connect(load_changed);
+
+        this.key_press_event.connect(on_key_pressed);
+        this.destroy.connect(Gtk.main_quit);
+    }
+
+    private bool on_key_pressed(Gdk.EventKey key) {
+        if (key.keyval != Gdk.Key.Escape) {
+            return false;
+        }
+        this.web_view.load_uri(HOME_URI);
+        return true;
     }
 
     private void load_changed(WebKit.WebView web_view,
