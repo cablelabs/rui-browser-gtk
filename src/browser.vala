@@ -49,7 +49,6 @@ public class RUI.Browser : Gtk.Window {
         this.web_view.load_changed.connect(load_changed);
 
         this.key_press_event.connect(on_key_pressed);
-        this.destroy.connect(Gtk.main_quit);
         this.window_state_event.connect(on_window_state_changed);
     }
 
