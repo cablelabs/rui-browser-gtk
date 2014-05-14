@@ -49,8 +49,13 @@ int main(string[] args) {
         return 2;
     }
 
-    RUI.Browser browser = new RUI.Browser();
-    browser.start(url);
+    RUI.Browser browser = new RUI.Browser(debug);
+    try {
+        browser.start(url);
+    } catch (Error e) {
+        stderr.printf("Error starting browser: %s\n", e.message);
+        return 1;
+    }
 
     Gtk.main();
     return 0;
