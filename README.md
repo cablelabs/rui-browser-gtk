@@ -2,7 +2,7 @@
 
 ### Ubuntu 14.04
 
-    sudo apt-get install git valac libgupnp-1.0-dev libgee-0.8-dev libwebkitgtk3-devel
+    sudo apt-get install git valac libgupnp-1.0-dev libgee-0.8-dev libjson-glib-dev libwebkitgtk3-devel
 
     # tup build tool
     # see: http://gittup.org/tup/
@@ -24,8 +24,8 @@
 
 ## Get Source
 
-    git clone https://github.com/cablelabs/librui-discoverer.git
-    cd librui-discoverer
+    git clone https://github.com/cablelabs/rui-browser-gtk.git
+    cd rui-browser-gtk
 
 ## Build
 
@@ -37,6 +37,8 @@ While developing, it can be useful to leave `tup` running in the background, aut
     tup monitor -a
     # stop with 'tup stop'
 
-## Linking
+## Running
 
-TODO
+    ./src/browser --static-dir ./static
+
+Run with `--fullscreen` to start fullscreen, or use F11 to toggle it while running. Use `--help` for other options.
