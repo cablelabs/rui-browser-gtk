@@ -25,15 +25,16 @@
  */
 public class RUI.Browser : Gtk.Window {
     private const string TITLE = "RUI Browser";
-    private string HOME_URI = "file://%s".printf(
-        File.new_for_path("static/index.html").get_path());
+    private string home_uri;
 
     private WebKit.WebView web_view;
     private RUI.Discoverer discoverer;
     private string? rui_json = null;
     private bool is_fullscreen = false;
 
-    public Browser(bool debug = false, bool start_fullscreen = false) {
+    public Browser(File home, bool debug = false,
+            bool start_fullscreen = false) {
+        this.home_uri = "file://%s".printf(home.get_path());
         set_default_size(800, 600);
         if (start_fullscreen) {
             fullscreen();
@@ -55,7 +56,7 @@ public class RUI.Browser : Gtk.Window {
     private bool on_key_pressed(Gdk.EventKey key) {
         switch (key.keyval) {
         case Gdk.Key.Escape:
-            this.web_view.load_uri(HOME_URI);
+            this.web_view.load_uri(home_uri);
             break;
         case Gdk.Key.F11:
             if (is_fullscreen) {
@@ -107,7 +108,7 @@ public class RUI.Browser : Gtk.Window {
     }
 
     private async void update_ruis() {
-        if (this.web_view.uri != HOME_URI || rui_json == null) {
+        if (this.web_view.uri != home_uri || rui_json == null) {
             return;
         }
         try {
@@ -124,7 +125,7 @@ public class RUI.Browser : Gtk.Window {
         if (url != null) {
             this.web_view.load_uri(url);
         } else {
-            this.web_view.load_uri(HOME_URI);
+            this.web_view.load_uri(home_uri);
         }
     }
 }
