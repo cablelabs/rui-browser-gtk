@@ -50,11 +50,8 @@ int main(string[] args) {
     }
 
     RUI.Browser browser = new RUI.Browser();
-    if (url != null) {
-        browser.navigate(url);
-    }
+    browser.start(url);
 
-    MainLoop loop = new MainLoop();
-    loop.run();
+    Gtk.main();
     return 0;
 }

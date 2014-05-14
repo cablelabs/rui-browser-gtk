@@ -24,7 +24,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 public class RUI.Browser : Gtk.Window {
+    private const string TITLE = "RUI Browser";
 
-    public void navigate(string url) {
+    private WebKit.WebView web_view;
+
+    public Browser() {
+        this.web_view = new WebKit.WebView();
+        add(this.web_view);
+        this.destroy.connect(Gtk.main_quit);
+        this.web_view.notify["title"].connect(() => {
+            this.title = "%s - %s".printf(this.web_view.title, TITLE);
+        });
+    }
+
+    public void start(string? url) {
+        show_all();
+        if (url != null) {
+            this.web_view.load_uri(url);
+        }
     }
 }
