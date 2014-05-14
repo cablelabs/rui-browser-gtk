@@ -24,9 +24,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 static bool debug = false;
+static bool start_fullscreen = false;
 static const OptionEntry[] OPTIONS = {
     { "debug", 'd', 0, OptionArg.NONE, ref debug,
         "Print debug messages to the console", null },
+    { "fullscreen", 'f', 0, OptionArg.NONE, ref start_fullscreen,
+        "Start fullscreen (use F11 to toggle while running)", null },
     { null }
 };
 
@@ -49,7 +52,7 @@ int main(string[] args) {
         return 2;
     }
 
-    RUI.Browser browser = new RUI.Browser(debug);
+    RUI.Browser browser = new RUI.Browser(debug, start_fullscreen);
     try {
         browser.start(url);
     } catch (Error e) {

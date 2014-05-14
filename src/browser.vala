@@ -31,9 +31,13 @@ public class RUI.Browser : Gtk.Window {
     private WebKit.WebView web_view;
     private RUI.Discoverer discoverer;
     private string? rui_json = null;
+    private bool is_fullscreen = false;
 
-    public Browser(bool debug) {
+    public Browser(bool debug = false, bool start_fullscreen = false) {
         set_default_size(800, 600);
+        if (start_fullscreen) {
+            fullscreen();
+        }
         this.discoverer = new RUI.Discoverer(debug);
         this.discoverer.services_changed.connect(services_changed);
 
@@ -46,14 +50,30 @@ public class RUI.Browser : Gtk.Window {
 
         this.key_press_event.connect(on_key_pressed);
         this.destroy.connect(Gtk.main_quit);
+        this.window_state_event.connect(on_window_state_changed);
     }
 
     private bool on_key_pressed(Gdk.EventKey key) {
-        if (key.keyval != Gdk.Key.Escape) {
+        switch (key.keyval) {
+        case Gdk.Key.Escape:
+            this.web_view.load_uri(HOME_URI);
+            break;
+        case Gdk.Key.F11:
+            if (is_fullscreen) {
+                unfullscreen();
+            } else {
+                fullscreen();
+            }
+            break;
+        default:
             return false;
         }
-        this.web_view.load_uri(HOME_URI);
         return true;
+    }
+
+    private bool on_window_state_changed(Gdk.EventWindowState event) {
+        this.is_fullscreen = Gdk.WindowState.FULLSCREEN in event.new_window_state;
+        return false;
     }
 
     private void load_changed(WebKit.WebView web_view,
