@@ -3,13 +3,21 @@ TUP=tup
 TUP_CHECKOUT=deps/.tup-checkout
 
 FEDORA_PACKAGES="git vala gupnp-devel libgee-devel webkitgtk3-devel fuse-devel"
-UBUNTU_PACKAGES="git valac libgupnp-1.0-dev libgee-0.8-dev libjson-glib-dev libfuse-dev"
+UBUNTU_PACKAGES="git valac libgupnp-1.0-dev libgee-0.8-dev libjson-glib-dev libwebkit2gtk-3.0-dev libfuse-dev"
 
 if [ -f /etc/fedora-release ]; then
     for package in $FEDORA_PACKAGES ; do
         if ! rpm -q $package > /dev/null ; then
             echo "Installing packages: $FEDORA_PACKAGES"
             sudo yum install -y $FEDORA_PACKAGES
+            break
+        fi
+    done
+elif hash apt-get 2> /dev/null ; then
+    for package in $UBUNTU_PACKAGES ; do
+        if ! dpkg -s $package > /dev/null 2>&1 ; then
+            echo "Installing packages: $UBUNTU_PACKAGES"
+            sudo apt-get install -y $UBUNTU_PACKAGES
             break
         fi
     done
