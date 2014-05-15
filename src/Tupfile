@@ -1,6 +1,8 @@
 include_rules
 
-LIBRUI_DISCOVERER_DIR = $(TUP_CWD)/../deps/librui-discoverer/src
-VALA_FLAGS += --vapidir=$(LIBRUI_DISCOVERER_DIR) --includedir=$(LIBRUI_DISCOVERER_DIR) -X -I$(LIBRUI_DISCOVERER_DIR) -X $(LIBRUI_DISCOVERER_DIR)/librui-discoverer.o --pkg=rui-discoverer
+export PKG_CONFIG_PATH
 
-: *.vala | $(LIBRUI_DISCOVERER_DIR)/*.vapi $(LIBRUI_DISCOVERER_DIR)/*.h $(LIBRUI_DISCOVERER_DIR)/*.o |> !vala -o browser |> browser
+DISCOVERER_DIR = $(TUP_CWD)/../deps/librui-discoverer
+VALA_FLAGS += --vapidir=$(DISCOVERER_DIR)/src --pkg=rui-discoverer-1.0
+
+: *.vala | $(DISCOVERER_DIR)/pkgconfig/*.pc $(DISCOVERER_DIR)/src/*.vapi $(DISCOVERER_DIR)/src/*.h $(DISCOVERER_DIR)/src/*.o |> PKG_CONFIG_PATH="$(DISCOVERER_DIR)/pkgconfig:$PKG_CONFIG_PATH" valac %f $(VALA_FLAGS) -o %o |> browser
