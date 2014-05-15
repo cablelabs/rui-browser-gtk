@@ -2,8 +2,8 @@
 TUP=tup
 TUP_CHECKOUT=deps/.tup-checkout
 
-FEDORA_PACKAGES="git vala gupnp-devel libgee-devel webkitgtk3-devel"
-UBUNTU_PACKAGES="git valac libgupnp-1.0-dev libgee-0.8-dev libjson-glib-dev"
+FEDORA_PACKAGES="git vala gupnp-devel libgee-devel webkitgtk3-devel fuse-devel"
+UBUNTU_PACKAGES="git valac libgupnp-1.0-dev libgee-0.8-dev libjson-glib-dev libfuse-dev"
 
 if [ -f /etc/fedora-release ]; then
     for package in $FEDORA_PACKAGES ; do
