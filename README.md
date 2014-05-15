@@ -24,8 +24,13 @@
 
 ## Get Source
 
-    git clone https://github.com/cablelabs/rui-browser-gtk.git
+    git clone https://github.com/cablelabs/rui-browser-gtk.git --recursive
     cd rui-browser-gtk
+
+If you already have the source and need the submodule, run:
+
+    git submodule init
+    git submodule update
 
 ## Build
 
