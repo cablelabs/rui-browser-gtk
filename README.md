@@ -1,5 +1,7 @@
 # RUI Browser
 
+<iframe width="1024" height="768" src="//www.youtube.com/embed/POw81mfzgrk" frameborder="0" allowfullscreen></iframe>
+
 This is a web browser with RUI discovery built-in. Use the "Esc" key to return to the discovery page. F11 toggles fullscreen.
 
 ## Get Source
