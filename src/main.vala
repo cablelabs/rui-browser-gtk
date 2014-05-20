@@ -23,10 +23,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-// TODO: Figure out why shutting down nicely causes a core dump in GUPnP.
-extern void exit(int exit_code);
-
 static bool debug = false;
 static bool start_fullscreen = false;
 static string? static_dir_path = null;
@@ -72,9 +68,7 @@ int main(string[] args) {
     }
 
     RUI.Browser browser = new RUI.Browser(home, debug, start_fullscreen);
-    browser.destroy.connect(() => {
-        exit(0);
-    });
+    browser.destroy.connect(Gtk.main_quit);
     try {
         browser.start(url);
     } catch (Error e) {
