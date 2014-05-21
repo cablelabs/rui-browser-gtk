@@ -32,9 +32,9 @@ public class RUI.Browser : Gtk.Window {
     private string? rui_json = null;
     private bool is_fullscreen = false;
 
-    public Browser(File home, bool debug = false,
+    public Browser(Soup.URI home, bool debug = false,
             bool start_fullscreen = false) {
-        this.home_uri = "file://%s".printf(home.get_path());
+        this.home_uri = home.to_string(false);
         set_default_size(800, 600);
         if (start_fullscreen) {
             fullscreen();

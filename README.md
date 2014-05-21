@@ -22,7 +22,7 @@ There is also a `clean.sh` script if you need it, but tup should usually handle 
 
 ## Running
 
-    src/browser --static-dir static
+    src/browser --home static/index.html
 
 Run with `--fullscreen` to start fullscreen, or use F11 to toggle it while running. Use `--help` for other options.
 
@@ -56,4 +56,4 @@ Then either add those folders to /etc/ld.so.conf, or to your `LD_LIBRARY_PATH`:
 
 If you're using `gst-git`, do it like this:
 
-    LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib gst-git ./src/browser -s static
+    LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib gst-git ./src/browser --home static/index.html

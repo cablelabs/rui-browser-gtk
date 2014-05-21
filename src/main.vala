@@ -25,15 +25,15 @@
  */
 static bool debug = false;
 static bool start_fullscreen = false;
-static string? static_dir_path = null;
+static string? home = null;
 
 static const OptionEntry[] OPTIONS = {
     { "debug", 'd', 0, OptionArg.NONE, ref debug,
         "Print debug messages to the console", null },
     { "fullscreen", 'f', 0, OptionArg.NONE, ref start_fullscreen,
         "Start fullscreen (use F11 to toggle while running)", null },
-    { "static-dir", 's', 0, OptionArg.FILENAME, ref static_dir_path,
-        "The location of the static files (the \"static\" folder in the git repo)", null },
+    { "home", 0, 0, OptionArg.FILENAME, ref home,
+        "The location of the home page (try static/index.html)", null },
     { null }
 };
 
@@ -41,22 +41,18 @@ int main(string[] args) {
     Gtk.init(ref args);
 
     string? url = null;
-    File home;
+    Soup.URI home_uri;
     try {
         var opt_context = new OptionContext("RUI Browser");
         opt_context.set_help_enabled (true);
         opt_context.add_main_entries (OPTIONS, null);
         opt_context.parse (ref args);
-        if (static_dir_path == null) {
-            throw new OptionError.BAD_VALUE("--static-dir must be set");
+        if (home == null) {
+            throw new OptionError.BAD_VALUE("--home must be set");
         }
-        var static_dir = File.new_for_path(static_dir_path);
-        home = static_dir.get_child("index.html");
-        if (!home.query_exists()) {
-            throw new OptionError.BAD_VALUE(
-                "--static-dir set incorrectly, %s does not exist".printf(
-                home.get_path()));
-        }
+        var base_uri = new Soup.URI(
+            "file://%s/".printf(Environment.get_current_dir()));
+        home_uri = new Soup.URI.with_base(base_uri, home);
         if (args.length >= 2) {
             url = args[1];
         }
@@ -67,7 +63,7 @@ int main(string[] args) {
         return 2;
     }
 
-    RUI.Browser browser = new RUI.Browser(home, debug, start_fullscreen);
+    RUI.Browser browser = new RUI.Browser(home_uri, debug, start_fullscreen);
     browser.destroy.connect(Gtk.main_quit);
     try {
         browser.start(url);
