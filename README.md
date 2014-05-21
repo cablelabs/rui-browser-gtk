@@ -57,3 +57,26 @@ Then either add those folders to /etc/ld.so.conf, or to your `LD_LIBRARY_PATH`:
 If you're using `gst-git`, do it like this:
 
     LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib gst-git ./src/browser --home static/index.html
+
+## Customization
+
+This browser has been designed to be customizable. If you want to change anything about the look and feel, just change any of the files in the "static" folder except for js/rui-discovery.js (this file is just a shim to provide a consistent interface).
+
+For example, if you like the layout but don't like the color scheme (or need to make it fit your corporate branding guidelines), then just change css/styles.css. If you hate our page, create a new HTML page, include js/rui-discovery.js and then listen for:
+
+    $(window.RUIDiscoverer).on("change", function yourcallback(event, ruis) {
+        // ruis is a list of RemoteUIs in JSON format
+    });
+
+If you really need the raw XML, you can reimplementing rui-discoverer.js too, by defining this:
+
+    window.RUIDiscoverer = {
+        handleUIs: function(newUIs) {
+            // newUIs is a list of services:
+            // service = {
+            //     id: /* Service's UDN */,
+            //     base_url: /* Service's base URL */,
+            //     ui_listing: /* Raw XML string containing <uilist> */
+            // }
+        }
+    }
