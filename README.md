@@ -35,28 +35,35 @@ I haven't found a way to do this without installing WebKit. Do a **release** bui
     Tools/Scripts/build-webkit --gtk
     cd WebKitBuild/Release
 
-    # You only need to run one of these, but running all of them probably won't
-    # hurt anything.
-    sudo make install
+    # The install command depends on which build system is being used.
+    # Most likely this is ninja:
     sudo ninja install
-    sudo ninja-build install
 
-This will install libwebkit2gtk-3.0 in /usr/local/lib or /usr/local/lib64.
+    # On Fedora ninja is named ninja-build
+    sudo ninja-build
 
-To use these with `pkg-config`, add the pkgconfig directory to your `PKG_CONFIG_PATH`:
+    # If ninja isn't installed, it will be be make
+    sudo make install
 
-    export PKG_CONFIG_PATH="/usr/local/lib:$PKG_CONFIG_PATH:/usr/local/lib64:$PKG_CONFIG_PATH"
+Look at the command output and figure out where it installed the libraries too. There should be a bunch of lines about copying .so files to /usr/local/lib[something]. In our experience, this has been /usr/local/lib/x86_64-linux-gnu on Ubuntu 64-bit and /usr/local/lib64 on Fedora. Add that folder to your `LD_LIBRARY_PATH`:
 
-    # or add it to your bashrc:
-    echo 'export PKG_CONFIG_PATH="/usr/local/lib:$PKG_CONFIG_PATH:/usr/local/lib64:$PKG_CONFIG_PATH"' >> ~/.bashrc
+    # Temp variable to make this documentation easier to write
+    # Set this to the path described above ^
+    export LOCAL_LIB_PATH=/usr/local/lib/path/to/libwebkit2gtk-3.0.so
 
-Then either add those folders to /etc/ld.so.conf, or to your `LD_LIBRARY_PATH`:
+Now set `LD_LIBRARY_PATH` and `PKG_CONFIG_PATH` based on that:
 
-    echo 'export LD_LIBRARY_PATH="/usr/local/lib64:/usr/local/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc
+    export LD_LIBRARY_PATH="$LOCAL_LIB_PATH:$LD_LIBRARY_PATH"
+    export PKG_CONFIG_PATH="$LOCAL_LIB_PATH/pkgconfig:$PKG_CONFIG_PATH"
 
-If you're using `gst-git`, do it like this:
+You can add these to your .bashrc if you want it to be automatic from now on. Make sure to replace `$LOCAL_LIB_PATH` with the full path if you put it in your .bashrc, or include the `export LOCAL_LIB_PATH=...` line.
 
-    LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib gst-git ./src/browser --home static/index.html
+### Full Example
+
+This assumes that WebKit's `ninja install` or `make install` put everything in /usr/local/lib/x86_64-linux-gnu, and that you're using `gst-git`.
+
+    PKG_CONFIG_PATH=/usr/local/lib/x86_64-linux-gnu/pkgconfig ./build.sh
+    LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu gst-git ./src/browser --home static/index.html
 
 ## Customization
 
