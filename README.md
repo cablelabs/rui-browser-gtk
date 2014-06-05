@@ -34,6 +34,8 @@ Run with `--fullscreen` to start fullscreen, or use F11 to toggle it while runni
 
 ## Using WebKitGTK+ From Git
 
+The instructions above use your Linux distro's package manager to find WebKitGTK+. If you want to use a version from git (for subtitle and caption support, for example), then follow these instructions.
+
 I haven't found a way to do this without installing WebKit. Do a **release** build of WebKit, then go into the build directory and run either `make install`, `ninja install` or `ninja-build install` (depending on if ninja is installed). For some reason this won't work with debug builds.
 
     cd ~/workspace/webkit
