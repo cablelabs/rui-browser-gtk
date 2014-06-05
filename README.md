@@ -24,6 +24,12 @@ There is also a `clean.sh` script if you need it, but tup should usually handle 
 
     src/browser --home static/index.html
 
+Note that `--home` *must* point to the complete path to `static/index.html`. The command above will only work if you're in the root directory of the repo. Otherwise you'll need to put in the full command. For example, something like this:
+
+    ~/workspace/rui-browser-gtk/src/browser --home ~/workspace/rui-browser-gtk/src/browser
+
+At some point we'd like to use `GResource` for this, but we weren't able to get WebKit to load a `GResource`.
+
 Run with `--fullscreen` to start fullscreen, or use F11 to toggle it while running. Use `--help` for other options.
 
 ## Using WebKitGTK+ From Git
