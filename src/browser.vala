@@ -23,57 +23,24 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-public class RUI.Browser : Gtk.Window {
-    private const string TITLE = "RUI Browser";
+public class RUI.MainWindow : RUI.BrowserWindow {
     private string home_uri;
 
-    private WebKit.WebView web_view;
     private RUI.Discoverer discoverer;
     private string? rui_json = null;
-    private bool is_fullscreen = false;
 
-    public Browser(Soup.URI home, bool debug = false,
+    public MainWindow(Soup.URI home, bool debug = false,
             bool start_fullscreen = false) {
+        base(start_fullscreen);
         this.home_uri = home.to_string(false);
-        set_default_size(800, 600);
-        if (start_fullscreen) {
-            fullscreen();
-        }
         this.discoverer = new RUI.Discoverer(debug);
         this.discoverer.services_changed.connect(services_changed);
 
-        this.web_view = new WebKit.WebView();
-        add(this.web_view);
-        this.web_view.notify["title"].connect(() => {
-            this.title = "%s - %s".printf(this.web_view.title, TITLE);
-        });
         this.web_view.load_changed.connect(load_changed);
-
-        this.key_press_event.connect(on_key_pressed);
-        this.window_state_event.connect(on_window_state_changed);
     }
 
-    private bool on_key_pressed(Gdk.EventKey key) {
-        switch (key.keyval) {
-        case Gdk.Key.Escape:
-            this.web_view.load_uri(home_uri);
-            break;
-        case Gdk.Key.F11:
-            if (is_fullscreen) {
-                unfullscreen();
-            } else {
-                fullscreen();
-            }
-            break;
-        default:
-            return false;
-        }
-        return true;
-    }
-
-    private bool on_window_state_changed(Gdk.EventWindowState event) {
-        this.is_fullscreen = Gdk.WindowState.FULLSCREEN in event.new_window_state;
-        return false;
+    protected override void on_escape_key() {
+        this.web_view.load_uri(home_uri);
     }
 
     private void load_changed(WebKit.WebView web_view,

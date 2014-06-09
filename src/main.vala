@@ -63,7 +63,7 @@ int main(string[] args) {
         return 2;
     }
 
-    RUI.Browser browser = new RUI.Browser(home_uri, debug, start_fullscreen);
+    RUI.MainWindow browser = new RUI.MainWindow(home_uri, debug, start_fullscreen);
     browser.destroy.connect(Gtk.main_quit);
     try {
         browser.start(url);
