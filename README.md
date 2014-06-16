@@ -11,9 +11,13 @@ This is a web browser with RUI discovery built-in. Use the "Esc" key to return t
 
 ## Build
 
+In general, you should build with this script:
+
     ./build.sh
 
-While developing, it can be useful to leave `tup` running in the background, autocompiling every time anything changes:
+This will install dependencies and rebuild.
+
+After dependencies are installed, you can also leave `tup` running in the background to recompile whenever any files change. This is generally only useful if you're making changes to the source code.
 
     tup monitor -a
     # stop with 'tup stop'
