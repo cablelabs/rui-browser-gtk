@@ -1,4 +1,5 @@
 #!/bin/bash -e
+DIR=`dirname $0`
 TUP=tup
 TUP_CHECKOUT=deps/.tup-checkout
 
@@ -27,6 +28,7 @@ else
     echo "On Ubuntu: sudo apt-get install $UBUNTU_PACKAGES"
 fi
 
+cd $DIR
 git submodule init
 git submodule update
 
@@ -51,4 +53,4 @@ fi
 $TUP upd
 
 echo "Done, now run:"
-echo "  ./src/browser -s static"
+echo "  ${DIR}/src/browser --home ${DIR}/static/index.html"
