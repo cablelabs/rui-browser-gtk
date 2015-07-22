@@ -3,8 +3,8 @@ DIR=`dirname $0`
 TUP=tup
 TUP_CHECKOUT=deps/.tup-checkout
 
-FEDORA_PACKAGES="gcc vala gupnp-devel libgee-devel json-glib-devel webkitgtk3-devel fuse-devel"
-UBUNTU_PACKAGES="gcc valac libgupnp-1.0-dev libgee-0.8-dev libjson-glib-dev libwebkit2gtk-3.0-dev libfuse-dev"
+FEDORA_PACKAGES="gcc vala gupnp-devel libgee-devel json-glib-devel webkitgtk4-devel fuse-devel"
+UBUNTU_PACKAGES="gcc valac libgupnp-1.0-dev libgee-0.8-dev libjson-glib-dev libwebkit2gtk-4.0-dev libfuse-dev"
 
 if [ -f /etc/fedora-release ]; then
     for package in $FEDORA_PACKAGES ; do
