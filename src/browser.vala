@@ -42,7 +42,9 @@ public class RUI.Browser : Gtk.Window {
         this.discoverer = new RUI.Discoverer(debug);
         this.discoverer.services_changed.connect(services_changed);
 
-        this.web_view = new WebKit.WebView();
+        WebKit.Settings settings = new WebKit.Settings();
+        settings.enable_mediasource = true;
+        this.web_view = new WebKit.WebView.with_settings(settings);
         add(this.web_view);
         this.web_view.notify["title"].connect(() => {
             this.title = "%s - %s".printf(this.web_view.title, TITLE);
